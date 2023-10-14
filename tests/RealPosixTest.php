@@ -22,8 +22,8 @@ class RealPosixTest extends BaseTestCase
     {
         $tmp = $this->tmpDir();
         $tmp->clear();
+        $tmp->put('one.txt', '');
         $fn = $tmp->getPath('one.txt');
-        touch($fn);
         chmod($fn, 0644);
         $this->assertTrue($this->posix->access($fn, PosixConstants::R_OK));
         $this->assertFalse($this->posix->access($fn, PosixConstants::X_OK));
