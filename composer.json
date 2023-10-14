@@ -1,0 +1,42 @@
+{
+    "name": "axy/posix",
+    "type": "library",
+    "description": "Mockable wrapper for POSIX functions",
+    "keywords": ["posix", "mock"],
+    "homepage": "https://github.com/axypro/posix",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Oleg Grigoriev",
+            "email": "go.vasac@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "ext-posix": "*"
+    },
+    "require-dev": {
+        "axy/pkg-unit": "~0.1.0",
+        "squizlabs/php_codesniffer": "=3.7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "axy\\posix\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "axy\\posix\\tests\\": "tests"
+        }
+    },
+    "archive": {
+        "exclude": [
+            "/tests/*",
+            "/devops/*",
+            "/doc/*",
+            "/*.sh",
+            "/*.xml.dist",
+            "/CHANGELOG.md"
+        ]
+    }
+}
