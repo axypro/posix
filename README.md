@@ -32,6 +32,11 @@ Are located in `axy\posix\exceptions`:
 
 * `IPosixException` - the main interface
     * `PosixException` - a standard function error (extends `LogicException`, just because)
+        * The constructor takes an error code as only argument
+        * An exception object has readonly properties:
+            * `$posixErrorCode (int)` - the origin error code, is equal to the exception code
+            * `$posixErrorConstant (?string)` - the error constant name (`EPERM` for example, NULL if not defined)
+            * `$posixErrorMessage (string)` - the error message as `posix_strerror()` returned
     * `PosixNotImplementedException` - the corresponding function is not defined (for example, `getpgid` is not defined on all systems)
 
 ## Structures
@@ -50,6 +55,11 @@ Each of them has the property `$data` that contains the original array and other
 All constants that used as method arguments are collected in the `PosixConstants` class.
 These are just copies of [the standard constants](https://www.php.net/manual/en/posix.constants.access.php) (without the prefix `POSIX_`).
 The PHP version allows collect these in the `IPosix` but this would clutter the interface with rarely used elements.
+
+## Error codes
+
+Error codes constants are collected in `PosixErrors`.
+There is a method `PosixErrors::getConstName(int $code): ?string` that returns the constant name for a code.
 
 ## Listener
 

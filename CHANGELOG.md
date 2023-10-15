@@ -1,3 +1,7 @@
+## 0.1.1 (15.10.2023)
+
+* Error constants (`PosixErrors`)
+
 ## 0.1.0 (14.10.2023)
 
 * The interface (`IPosix`)

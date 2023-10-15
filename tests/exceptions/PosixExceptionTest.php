@@ -12,7 +12,11 @@ class PosixExceptionTest extends BaseTestCase
     public function testMessage(): void
     {
         $e = new PosixException(5);
+        $str = posix_strerror(5);
         $this->assertSame(5, $e->getCode());
-        $this->assertSame(posix_strerror(5), $e->getMessage());
+        $this->assertSame(5, $e->posixErrorCode);
+        $this->assertSame('EIO', $e->posixErrorConstant);
+        $this->assertSame($str, $e->posixErrorMessage);
+        $this->assertSame("EIO: $str", $e->getMessage());
     }
 }
