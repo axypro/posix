@@ -1,3 +1,7 @@
+## Dev
+
+* Support PHP 8.3 (test in GitHub action)
+
 ## 0.1.1 (15.10.2023)
 
 * Error constants (`PosixErrors`)
