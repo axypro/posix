@@ -10,7 +10,7 @@ class PosixGroupInfo
     public readonly string $name;
 
     /** The group password in an encrypted format (just asterisk may be used) */
-    public readonly string $password;
+    public readonly string $passwd;
 
     /** The group ID */
     public readonly int $gid;
@@ -21,7 +21,7 @@ class PosixGroupInfo
     public function __construct(public readonly array $data)
     {
         $this->name = (string)($data['name'] ?? '');
-        $this->password = (string)($data['password'] ?? '');
+        $this->passwd = (string)($data['passwd'] ?? '');
         $this->gid = (int)($data['gid'] ?? 0);
         $this->members = $data['members'] ?? [];
     }

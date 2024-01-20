@@ -10,7 +10,7 @@ class PosixUserInfo
     public readonly string $name;
 
     /** The password in an encrypted format (just asterisk may be used) */
-    public readonly string $password;
+    public readonly string $passwd;
 
     /** The user ID */
     public readonly int $uid;
@@ -29,7 +29,7 @@ class PosixUserInfo
 
     public function __construct(public readonly array $data)
     {
-        foreach (['name', 'password', 'gecos', 'dir', 'shell'] as $k) {
+        foreach (['name', 'passwd', 'gecos', 'dir', 'shell'] as $k) {
             $this->$k = (string)($data[$k] ?? '');
         }
         foreach (['uid', 'gid'] as $k) {

@@ -106,6 +106,7 @@ class RealPosixTest extends BaseTestCase
         $this->assertSame('/home/tester', $info->dir);
         $data = posix_getpwuid(1735) ?: null;
         $this->assertSame($data['shell'] ?? null, $info->shell);
+        $this->assertSame(posix_getpwuid(1735)['passwd'] ?? null, $info->passwd);
         $this->assertNull($this->posix->getpwuid(1801));
     }
 
@@ -125,6 +126,7 @@ class RealPosixTest extends BaseTestCase
         $this->assertSame([
             'axy_tester',
         ], $info->members);
+        $this->assertSame(posix_getgrgid(1234)['passwd'] ?? null, $info->passwd);
         $this->assertNull($this->posix->getgrgid(2345));
     }
 
