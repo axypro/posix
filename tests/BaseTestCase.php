@@ -12,6 +12,8 @@ abstract class BaseTestCase extends BaseAxyTestCase
     protected function expectPosixError(?int $code = null): void
     {
         $this->expectException(PosixException::class);
-        $this->expectExceptionCode($code);
+        if ($code !== null) {
+            $this->expectExceptionCode($code);
+        }
     }
 }
