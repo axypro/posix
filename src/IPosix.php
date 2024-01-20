@@ -21,6 +21,12 @@ interface IPosix
     public function eaccess(string $filename, int $flags = PosixConstants::F_OK): bool;
 
     /**
+     * @see posix_fpathconf
+     * @throws PosixException
+     */
+    public function fpathconf(mixed $fileDescription, int $name): int;
+
+    /**
      * @see posix_getcwd()
      * @throws PosixException
      */

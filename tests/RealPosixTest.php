@@ -222,5 +222,24 @@ class RealPosixTest extends BaseTestCase
         $this->assertSame($name, $this->posix->ttyname(STDOUT));
     }
 
+    public function testFpathconf(): void
+    {
+        if (!function_exists('posix_fpathconf')) {
+            $this->expectException(PosixNotImplementedException::class);
+            $this->posix->fpathconf(1, PosixConstants::PC_PATH_MAX);
+            return;
+        }
+        $fp = fopen(__DIR__, "r");
+        try {
+            $expected = posix_fpathconf($fp, PosixConstants::PC_PATH_MAX);
+            if ($expected === false) {
+                $this->expectPosixError();
+            }
+            $this->assertSame($expected, $this->posix->fpathconf($fp, PosixConstants::PC_PATH_MAX));
+        } finally {
+            fclose($fp);
+        }
+    }
+
     private RealPosix $posix;
 }

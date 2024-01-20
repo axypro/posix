@@ -30,6 +30,11 @@ class RealPosix implements IPosix
         return $this->runMethod(__FUNCTION__, [$filename, $flags]);
     }
 
+    public function fpathconf(mixed $fileDescription, int $name): int
+    {
+        return $this->runMethod(__FUNCTION__, [$fileDescription, $name], false);
+    }
+
     public function getcwd(): string
     {
         return $this->runMethod(__FUNCTION__, [], false);
