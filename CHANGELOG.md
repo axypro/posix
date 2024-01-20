@@ -6,6 +6,7 @@
 * [eaccess](https://www.php.net/manual/ru/function.posix-eaccess.php)
 * [fpathconf](https://www.php.net/manual/en/function.posix-fpathconf.php)
 * [sysconf](https://www.php.net/manual/en/function.posix-sysconf.php)
+* [pathconf](https://www.php.net/manual/en/function.posix-pathconf.php)
 
 ## 0.1.1 (15.10.2023)
 

@@ -241,6 +241,22 @@ class RealPosixTest extends BaseTestCase
         }
     }
 
+    public function testPathconf(): void
+    {
+        if (!function_exists('posix_pathconf')) {
+            $this->expectException(PosixNotImplementedException::class);
+            $this->posix->pathconf(__DIR__, PosixConstants::PC_PATH_MAX);
+            return;
+        }
+        $expected = posix_pathconf(__DIR__, PosixConstants::PC_PATH_MAX);
+        if ($expected === false) {
+            $this->expectPosixError();
+        }
+        $this->assertSame($expected, $this->posix->pathconf(__DIR__, PosixConstants::PC_PATH_MAX));
+        $this->expectPosixError(PosixErrors::ENOENT);
+        $this->posix->pathconf(__DIR__ . '/none', PosixConstants::PC_ALLOC_SIZE_MIN);
+    }
+
     public function testSysconf(): void
     {
         if (!function_exists('posix_sysconf')) {

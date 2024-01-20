@@ -146,6 +146,11 @@ class RealPosix implements IPosix
         $this->runMethod(__FUNCTION__, [$filename, $flags, $major, $minor], false);
     }
 
+    public function pathconf(string $path, int $name): int
+    {
+        return $this->runMethod(__FUNCTION__, [$path, $name], false);
+    }
+
     public function setegid(int $groupId): void
     {
         $this->runMethod(__FUNCTION__, [$groupId], false);

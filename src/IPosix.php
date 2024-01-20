@@ -123,6 +123,12 @@ interface IPosix
     public function mknod(string $filename, int $flags, int $major = 0, int $minor = 0): void;
 
     /**
+     * @see posix_pathconf()
+     * @throws PosixException
+     */
+    public function pathconf(string $path, int $name): int;
+
+    /**
      * @see posix_setegid()
      * @throws PosixException
      */
