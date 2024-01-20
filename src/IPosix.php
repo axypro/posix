@@ -161,6 +161,9 @@ interface IPosix
     /** @see posix_strerror() */
     public function strerror(int $code): string;
 
+    /** @see posix_sysconf */
+    public function sysconf(int $confId): int;
+
     /**
      * @see posix_times()
      * @throws PosixException

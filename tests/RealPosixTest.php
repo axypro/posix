@@ -241,5 +241,16 @@ class RealPosixTest extends BaseTestCase
         }
     }
 
+    public function testSysconf(): void
+    {
+        if (!function_exists('posix_sysconf')) {
+            $this->expectException(PosixNotImplementedException::class);
+            $this->posix->sysconf(PosixConstants::SC_PAGESIZE);
+            return;
+        }
+        $expected = posix_sysconf(PosixConstants::SC_PAGESIZE);
+        $this->assertSame($expected, $this->posix->sysconf(PosixConstants::SC_PAGESIZE));
+    }
+
     private RealPosix $posix;
 }

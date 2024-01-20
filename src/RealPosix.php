@@ -186,6 +186,11 @@ class RealPosix implements IPosix
         return (string)$this->runMethod(__FUNCTION__, [$code]);
     }
 
+    public function sysconf(int $confId): int
+    {
+        return (int)$this->runMethod(__FUNCTION__, [$confId]);
+    }
+
     public function times(): PosixTimesInfo
     {
         return new PosixTimesInfo($this->runMethod(__FUNCTION__, [], false));
