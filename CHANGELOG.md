@@ -1,4 +1,4 @@
-## Dev
+## 0.2.0 (20.01.2023)
 
 * #1: fix the password field in user/group info (it is "passwd", not "password")
 
