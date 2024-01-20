@@ -2,6 +2,7 @@
 
 * Support PHP 8.3 (test in GitHub action)
 * Tests refactoring
+* PosixConstants: added constants that are defined in 8.3
 * [eaccess](https://www.php.net/manual/ru/function.posix-eaccess.php)
 
 ## 0.1.1 (15.10.2023)

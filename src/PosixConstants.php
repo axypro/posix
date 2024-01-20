@@ -4,6 +4,19 @@ declare(strict_types=1);
 
 namespace axy\posix;
 
+/**
+ * The list of constants which used in POSIX functions
+ * Based on the list of global predefined constants (https://www.php.net/manual/en/posix.constants.php)
+ * Have the same names without the "POSIX_" prefix
+ * If a constant is introduced after the minimal supported PHP version the numeric value is used
+ *
+ * Some constants (POSIX_RLIMIT_KQUEUES, POSIX_RLIMIT_NPTS) are described in the PHP documentation as FreeBDS-depended
+ * but are not defined in my IDE.
+ * That values I found in the net are intercept with constants above.
+ * For example: https://github.com/rust-lang/libc/blob/main/src/unix/bsd/freebsdlike/freebsd/mod.rs
+ *
+ * The constant "POSIX_PC_ALLOC_SYMLINK_MAX" is described in the documentation but is not defined
+ */
 final class PosixConstants
 {
     public const F_OK = POSIX_F_OK;
@@ -32,12 +45,17 @@ final class PosixConstants
     public const RLIMIT_SIGPENDING = POSIX_RLIMIT_SIGPENDING;
     public const RLIMIT_STACK = POSIX_RLIMIT_STACK;
     public const RLIMIT_INFINITY = POSIX_RLIMIT_INFINITY;
-    /*
-     The following constants are described in the PHP documentation as FreeBDS-depended but are not defined in my IDE
-     That values I found in the net are intercept with constants above.
-     For example: https://github.com/rust-lang/libc/blob/main/src/unix/bsd/freebsdlike/freebsd/mod.rs
-
-     public const RLIMIT_KQUEUES = POSIX_RLIMIT_KQUEUES;
-     public const RLIMIT_NPTS = POSIX_RLIMIT_NPTS;
-    */
+    public const PC_LINK_MAX = 0;
+    public const PC_MAX_CANON = 1;
+    public const PC_MAX_INPUT = 2;
+    public const PC_NAME_MAX = 3;
+    public const PC_PATH_MAX = 4;
+    public const PC_PIPE_BUF = 5;
+    public const PC_CHOWN_RESTRICTED = 6;
+    public const PC_NO_TRUNC = 7;
+    public const PC_ALLOC_SIZE_MIN = 18;
+    public const SC_ARG_MAX = 0;
+    public const SC_PAGESIZE = 30;
+    public const SC_NPROCESSORS_CONF = 83;
+    public const SC_NPROCESSORS_ONLN = 84;
 }
