@@ -27,11 +27,13 @@ class RealPosix implements IPosix
 
     public function eaccess(string $filename, int $flags = PosixConstants::F_OK): bool
     {
+        $this->checkImplementation(__FUNCTION__);
         return $this->runMethod(__FUNCTION__, [$filename, $flags]);
     }
 
     public function fpathconf(mixed $fileDescription, int $name): int
     {
+        $this->checkImplementation(__FUNCTION__);
         return $this->runMethod(__FUNCTION__, [$fileDescription, $name], false);
     }
 
@@ -148,6 +150,7 @@ class RealPosix implements IPosix
 
     public function pathconf(string $path, int $name): int
     {
+        $this->checkImplementation(__FUNCTION__);
         return $this->runMethod(__FUNCTION__, [$path, $name], false);
     }
 
@@ -193,6 +196,7 @@ class RealPosix implements IPosix
 
     public function sysconf(int $confId): int
     {
+        $this->checkImplementation(__FUNCTION__);
         return (int)$this->runMethod(__FUNCTION__, [$confId]);
     }
 
