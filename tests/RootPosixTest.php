@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace axy\posix\tests;
 
-use axy\posix\{
-    PosixErrors,
-    RealPosix,
-};
+use axy\posix\{PosixConstants, PosixErrors, RealPosix};
 
 /**
  * These tests run under the root (rUid and eUid).
@@ -35,6 +32,26 @@ class RootPosixTest extends BaseTestCase
         posix_seteuid(0);
         posix_setgid($this->rGid);
         posix_setegid($this->eGid);
+    }
+
+    public function testAccess(): void
+    {
+        if (!function_exists('posix_eaccess')) {
+            $this->markTestSkipped('posix_eaccess() is not implemented in this PHP version');
+        }
+        $tmp = $this->tmpDir();
+        $tmp->clear();
+        $tmp->put('access.txt', '');
+        $fn = $tmp->getPath('access.txt');
+        chmod($fn, 0644);
+        $this->assertTrue($this->posix->eaccess($fn));
+        $this->assertTrue($this->posix->eaccess($fn, PosixConstants::R_OK));
+        $this->assertTrue($this->posix->eaccess($fn, PosixConstants::W_OK));
+        posix_seteuid(1234);
+        $this->assertTrue($this->posix->eaccess($fn, PosixConstants::R_OK));
+        $this->assertFalse($this->posix->eaccess($fn, PosixConstants::W_OK));
+        $this->assertTrue($this->posix->access($fn, PosixConstants::R_OK));
+        $this->assertTrue($this->posix->access($fn, PosixConstants::W_OK));
     }
 
     public function testUserIds(): void

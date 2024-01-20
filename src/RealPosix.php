@@ -15,14 +15,19 @@ class RealPosix implements IPosix
     {
     }
 
-    public function access(string $filename, int $flag = PosixConstants::F_OK): bool
+    public function access(string $filename, int $flags = PosixConstants::F_OK): bool
     {
-        return $this->runMethod(__FUNCTION__, [$filename, $flag]);
+        return $this->runMethod(__FUNCTION__, [$filename, $flags]);
     }
 
     public function ctermid(): string
     {
         return $this->runMethod(__FUNCTION__, [], false);
+    }
+
+    public function eaccess(string $filename, int $flags = PosixConstants::F_OK): bool
+    {
+        return $this->runMethod(__FUNCTION__, [$filename, $flags]);
     }
 
     public function getcwd(): string

@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace axy\posix\tests;
 
-use axy\posix\{
-    PosixConstants,
-    PosixErrors,
-    RealPosix,
-};
+use axy\posix\{exceptions\PosixNotImplementedException, PosixConstants, PosixErrors, RealPosix};
 use axy\posix\exceptions\PosixException;
 
 class RealPosixTest extends BaseTestCase
@@ -30,6 +26,24 @@ class RealPosixTest extends BaseTestCase
         $this->assertFalse($this->posix->access($fn, PosixConstants::X_OK));
         $none = $tmp->getPath('two.txt');
         $this->assertFalse($this->posix->access($none, PosixConstants::R_OK));
+    }
+
+    public function testEAccess(): void
+    {
+        if (!function_exists('posix_eaccess')) {
+            $this->expectException(PosixNotImplementedException::class);
+            $this->posix->eaccess(__FILE__);
+            return;
+        }
+        $tmp = $this->tmpDir();
+        $tmp->clear();
+        $tmp->put('one.txt', '');
+        $fn = $tmp->getPath('one.txt');
+        chmod($fn, 0644);
+        $this->assertTrue($this->posix->eaccess($fn, PosixConstants::R_OK));
+        $this->assertFalse($this->posix->eaccess($fn, PosixConstants::X_OK));
+        $none = $tmp->getPath('two.txt');
+        $this->assertFalse($this->posix->eaccess($none, PosixConstants::R_OK));
     }
 
     public function testCtermid(): void

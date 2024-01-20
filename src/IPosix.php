@@ -9,13 +9,16 @@ use axy\posix\exceptions\PosixException;
 interface IPosix
 {
     /** @see posix_access() */
-    public function access(string $filename, int $flag = PosixConstants::F_OK): bool;
+    public function access(string $filename, int $flags = PosixConstants::F_OK): bool;
 
     /**
      * @see posix_ctermid()
      * @throws PosixException
      */
     public function ctermid(): string;
+
+    /** @see posix_eaccess */
+    public function eaccess(string $filename, int $flags = PosixConstants::F_OK): bool;
 
     /**
      * @see posix_getcwd()

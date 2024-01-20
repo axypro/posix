@@ -37,7 +37,7 @@ Are located in `axy\posix\exceptions`:
             * `$posixErrorCode (int)` - the origin error code, is equal to the exception code
             * `$posixErrorConstant (?string)` - the error constant name (`EPERM` for example, NULL if not defined)
             * `$posixErrorMessage (string)` - the error message as `posix_strerror()` returned
-    * `PosixNotImplementedException` - the corresponding function is not defined (for example, `getpgid` is not defined on all systems)
+    * `PosixNotImplementedException` - the corresponding function is not defined (for example, `getpgid` is not defined on all systems, some functions were added in 8.3)
 
 ## Structures
 

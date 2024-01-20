@@ -2,6 +2,7 @@
 
 * Support PHP 8.3 (test in GitHub action)
 * Tests refactoring
+* [eaccess](https://www.php.net/manual/ru/function.posix-eaccess.php)
 
 ## 0.1.1 (15.10.2023)
 
