@@ -24,4 +24,4 @@ fi
 mkdir -p "$ROOT_DIR/vendor" || exit 1
 mkdir -p "$ROOT_DIR/local" || exit 1
 
-cd "$CURRENT_DIR/.." && docker-compose build || exit 1
+cd "$CURRENT_DIR/.." && docker-compose --profile console build || exit 1
