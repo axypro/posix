@@ -1,8 +1,8 @@
-## 0.2.0 (20.01.2023)
+## 0.2.0 (20.01.2024)
 
 * #1: fix the password field in user/group info (it is "passwd", not "password")
 
-## 0.1.2 (20.01.2023)
+## 0.1.2 (20.01.2024)
 
 * Support PHP 8.3 (test in GitHub action)
 * Tests refactoring
