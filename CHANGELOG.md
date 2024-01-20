@@ -1,4 +1,4 @@
-## Dev
+## 0.1.2 (20.01.2023)
 
 * Support PHP 8.3 (test in GitHub action)
 * Tests refactoring
