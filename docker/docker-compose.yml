@@ -19,3 +19,4 @@ services:
         network_mode: host
         environment:
             XDEBUG_MODE: 'coverage'
+            AXY_PKG_ENVIRONMENT: 'docker'

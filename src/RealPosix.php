@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace axy\posix;
 
-use axy\posix\exceptions\PosixException;
-use axy\posix\exceptions\PosixNotImplementedException;
+use axy\posix\exceptions\{
+    PosixException,
+    PosixNotImplementedException,
+};
 
 class RealPosix implements IPosix
 {

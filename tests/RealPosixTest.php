@@ -6,6 +6,7 @@ namespace axy\posix\tests;
 
 use axy\posix\{
     PosixConstants,
+    PosixErrors,
     RealPosix,
 };
 use axy\posix\exceptions\PosixException;
@@ -53,46 +54,72 @@ class RealPosixTest extends BaseTestCase
         $this->assertSame(posix_getuid(), $this->posix->getuid());
     }
 
-    public function testProcess(): void
+    public function testProcessIds(): void
+    {
+        $this->assertSame(posix_getpid(), $this->posix->getpid());
+        $this->assertSame(posix_getppid(), $this->posix->getppid());
+        $this->assertSame(posix_getpgrp(), $this->posix->getpgrp());
+    }
+
+    public function testGetSid(): void
     {
         $pid = posix_getpid();
-        $ppid = posix_getppid();
-        $grp = posix_getpgrp();
         $sid = posix_getsid($pid);
-        $this->assertSame($pid, $this->posix->getpid());
-        $this->assertSame($ppid, $this->posix->getppid());
-        $this->assertSame($grp, $this->posix->getpgrp());
-        if ($sid !== false) {
-            $this->assertSame($sid, $this->posix->getsid($pid));
+        if ($sid === false) {
+            $this->expectPosixError();
         }
+        $this->assertSame($sid, $this->posix->getsid($pid));
     }
 
-    /** @dataProvider providerGetUserInfo */
-    public function testGetUserInfo(string $fn, mixed $arg, bool $exist = true): void
+    public function testGetPGid(): void
     {
-        $data = call_user_func("posix_$fn", $arg);
-        $info = $this->posix->$fn($arg);
-        if (!$exist) {
-            $this->assertFalse($data);
-            $this->assertNull($info);
-            return;
-        } else {
-            $this->assertNotEmpty($data);
+        $pid = posix_getpid();
+        $pgid = posix_getpgid($pid);
+        if ($pgid === false) {
+            $this->expectPosixError();
         }
-        $this->assertSame('root', $info->name);
-        $this->assertSame(0, $info->uid);
-        $this->assertSame(0, $info->gid);
-        $this->assertSame($data['shell'] ?? '', $info->shell);
+        $this->assertSame($pgid, $this->posix->getpgid($pid));
     }
 
-    public static function providerGetUserInfo(): array
+    public function testGetpwuid(): void
     {
-        return [
-            'getpwnam' => ['getpwnam', 'root'],
-            'getpwuid' => ['getpwuid', 0],
-            'wrong_getpwnam' => ['getpwnam', 'unknown-user', false],
-            'wrong_getpwuid' => ['getpwuid', -1, false],
-        ];
+        $this->requiresDocker();
+        $info = $this->posix->getpwuid(1735);
+        $this->assertSame(1735, $info?->uid);
+        $this->assertSame(1735, $info->gid);
+        $this->assertSame('axy_tester', $info->name);
+        $this->assertSame('fake_tester', $info->gecos);
+        $this->assertSame('/home/tester', $info->dir);
+        $data = posix_getpwuid(1735) ?: null;
+        $this->assertSame($data['shell'] ?? null, $info->shell);
+        $this->assertNull($this->posix->getpwuid(1801));
+    }
+
+    public function testGetpwnam(): void
+    {
+        $this->requiresDocker();
+        $this->assertSame('fake_tester', $this->posix->getpwnam('axy_tester')?->gecos);
+        $this->assertNull($this->posix->getpwnam('xxx_xxx'));
+    }
+
+    public function testGetgrgid(): void
+    {
+        $this->requiresDocker();
+        $info = $this->posix->getgrgid(1234);
+        $this->assertSame(1234, $info?->gid);
+        $this->assertSame('axy_test', $info->name);
+        $this->assertSame([
+            'axy_tester',
+        ], $info->members);
+        $this->assertNull($this->posix->getgrgid(2345));
+    }
+
+    public function testGetgrnam(): void
+    {
+        $this->requiresDocker();
+        $this->assertSame(1234, $this->posix->getgrnam('axy_test')?->gid);
+        $this->assertSame(1735, $this->posix->getgrnam('axy_tester')?->gid);
+        $this->assertNull($this->posix->getgrnam('xxx_xxx'));
     }
 
     public function testGetrlimit(): void
@@ -105,10 +132,19 @@ class RealPosixTest extends BaseTestCase
         $this->assertSame($data['hard cpu'] ?? '', $info->hard->cpu);
     }
 
-    public function testStrerror(): void
+    /** @dataProvider providerStrerror */
+    public function testStrerror(int $code): void
     {
-        $this->assertSame(posix_strerror(0), $this->posix->strerror(0));
-        $this->assertSame(posix_strerror(5), $this->posix->strerror(5));
+        $this->assertSame(posix_strerror($code), $this->posix->strerror($code));
+    }
+
+    public static function providerStrerror(): array
+    {
+        return [
+            [PosixErrors::EIO],
+            [0],
+            [-1],
+        ];
     }
 
     public function testTimes(): void
@@ -130,6 +166,46 @@ class RealPosixTest extends BaseTestCase
         }
         $uname = $this->posix->uname();
         $this->assertSame($data['nodename'] ?? '', $uname->nodename);
+    }
+
+    public function testGetlogin(): void
+    {
+        $login = posix_getlogin();
+        if ($login === false) {
+            $this->expectException(PosixException::class);
+        }
+        $this->assertSame($login, $this->posix->getlogin());
+    }
+
+    public function testGetgroups(): void
+    {
+        $expected = posix_getgroups();
+        if ($expected === false) {
+            $this->expectException(PosixException::class);
+        }
+        $actual = $this->posix->getgroups();
+        if (is_array($expected)) {
+            sort($expected);
+            sort($actual);
+            $this->assertSame($expected, $actual);
+        }
+    }
+
+    public function testIsAtty(): void
+    {
+        $fp = fopen(__FILE__, "rt");
+        $this->assertFalse($this->posix->isatty($fp));
+        fclose($fp);
+        $this->assertSame(posix_isatty(STDOUT), $this->posix->isatty(STDOUT));
+    }
+
+    public function testTtyname(): void
+    {
+        $name = posix_ttyname(STDOUT);
+        if ($name === false) {
+            $this->expectPosixError();
+        }
+        $this->assertSame($name, $this->posix->ttyname(STDOUT));
     }
 
     private RealPosix $posix;

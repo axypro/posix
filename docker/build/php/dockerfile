@@ -12,3 +12,9 @@ RUN docker-php-ext-install \
 RUN pecl install xdebug-3.3.1 && docker-php-ext-enable xdebug
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN useradd axy_worker \
+    && groupadd --gid 1234 axy_test \
+    && useradd --uid 1735 --home /home/tester --comment fake_tester axy_tester \
+    && usermod -a -G axy_test axy_tester \
+    && usermod -a -G axy_worker axy_tester

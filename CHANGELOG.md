@@ -1,6 +1,7 @@
 ## Dev
 
 * Support PHP 8.3 (test in GitHub action)
+* Tests refactoring
 
 ## 0.1.1 (15.10.2023)
 
